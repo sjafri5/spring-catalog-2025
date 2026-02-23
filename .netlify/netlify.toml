@@ -1,0 +1,26 @@
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/Users/clawdcode/.openclaw/workspace/para/1-projects/friend-catalog"
+publishOrigin = "default"
+base = "/Users/clawdcode/.openclaw/workspace/para/1-projects/friend-catalog"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

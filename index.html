@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring 2025 Collection</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f8f5f0;
+      color: #2c2420;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Hero */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      padding: 80px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, #f0ebe3 0%, #f8f5f0 100%);
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 8vw, 6rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #2c2420;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: #8a7968;
+      letter-spacing: 0.12em;
+      margin-bottom: 32px;
+    }
+
+    .hero .divider {
+      width: 60px;
+      height: 1px;
+      background: #c4b5a4;
+      margin-bottom: 32px;
+    }
+
+    .hero .tagline {
+      font-weight: 300;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #a09080;
+    }
+
+    /* Catalog Grid */
+    .catalog {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 4px;
+    }
+
+    .grid-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 3/4;
+      background: #ede8e0;
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0, 0.25, 1), filter 0.6s ease;
+      display: block;
+    }
+
+    .grid-item:hover img {
+      transform: scale(1.04);
+    }
+
+    .grid-item .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(44, 36, 32, 0);
+      transition: background 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grid-item:hover .overlay {
+      background: rgba(44, 36, 32, 0.15);
+    }
+
+    .grid-item .overlay span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .grid-item:hover .overlay span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Wide items for variety */
+    .grid-item:nth-child(1) { grid-column: span 2; aspect-ratio: 3/2; }
+    .grid-item:nth-child(7) { grid-column: span 2; aspect-ratio: 3/2; }
+    .grid-item:nth-child(15) { grid-column: span 2; aspect-ratio: 3/2; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      padding: 40px;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+
+    .lightbox .close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 300;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox .close:hover { opacity: 1; }
+
+    .lightbox .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.5rem;
+      color: #fff;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      user-select: none;
+      padding: 20px;
+      font-weight: 300;
+    }
+
+    .lightbox .nav:hover { opacity: 1; }
+    .lightbox .prev { left: 16px; }
+    .lightbox .next { right: 16px; }
+
+    /* Section breaks */
+    .section-break {
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .section-break h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2c2420;
+    }
+
+    .section-break .line {
+      width: 40px;
+      height: 1px;
+      background: #c4b5a4;
+      margin: 20px auto 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 24px;
+      border-top: 1px solid #e0d8ce;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #a09080;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px;
+      }
+      .grid-item:nth-child(1),
+      .grid-item:nth-child(7),
+      .grid-item:nth-child(15) {
+        grid-column: span 2;
+      }
+      .hero { min-height: 45vh; padding: 60px 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: 1fr; }
+      .grid-item:nth-child(1),
+      .grid-item:nth-child(7),
+      .grid-item:nth-child(15) {
+        grid-column: span 1;
+        aspect-ratio: 3/4;
+      }
+    }
+
+    /* Fade in on scroll */
+    .grid-item {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid-item:nth-child(1) { animation-delay: 0.05s; }
+    .grid-item:nth-child(2) { animation-delay: 0.1s; }
+    .grid-item:nth-child(3) { animation-delay: 0.15s; }
+    .grid-item:nth-child(4) { animation-delay: 0.2s; }
+    .grid-item:nth-child(5) { animation-delay: 0.25s; }
+    .grid-item:nth-child(6) { animation-delay: 0.3s; }
+    .grid-item:nth-child(n+7) { animation-delay: 0s; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1>Spring Collection</h1>
+    <div class="divider"></div>
+    <p class="subtitle">Handcrafted Block Print Textiles</p>
+    <p class="tagline">Artisan made &middot; Ethically sourced &middot; One of a kind</p>
+  </div>
+
+  <div class="catalog">
+    <div class="grid" id="catalog-grid">
+    </div>
+  </div>
+
+  <div class="section-break">
+    <h2>Every piece tells a story</h2>
+    <div class="line"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 &middot; All Rights Reserved</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <span class="close" onclick="closeLightbox()">&times;</span>
+    <span class="nav prev" onclick="prevImage(event)">&lsaquo;</span>
+    <span class="nav next" onclick="nextImage(event)">&rsaquo;</span>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <script>
+    const images = [
+      "images/59E7D24C-F19D-4FF1-B36C-D4919E09B5E6.png",
+      "images/2809215D-3989-4E41-9079-C3FC03B657FF.png",
+      "images/10889C31-78A0-401E-8B62-F687D669ED27.png",
+      "images/EB774A9A-C4A8-4CA9-AE32-61770210A920.png",
+      "images/7F1146DC-5B2F-4097-A765-571498083EE6.png",
+      "images/C1C35079-3CD0-46F1-9D23-D3A4172B253C.png",
+      "images/5B7B8E64-869F-4685-9D19-01CEC61EE52C.png",
+      "images/B9568BD8-172C-4FC0-8CDA-CE96E1AF092A.png",
+      "images/905E64E9-E443-457D-884E-3696D01A781D.png",
+      "images/770956FE-2A70-4871-9CD9-AB8E05AAF2FA.png",
+      "images/3B5D29B8-C808-4CF3-AE11-943728D3189A.png",
+      "images/E7FB7E60-C1CD-4015-954F-F5FA4149C264.png",
+      "images/090915A8-06B5-465D-A3BF-C3F15CF0041C.png",
+      "images/1818E691-2DA5-4DC5-967A-68F43D7F17E8.png",
+      "images/C2273B23-C388-4C06-AEC5-AFF5B8E4FFE6.png",
+      "images/D191B511-346A-4621-A60A-2C6EA675059B.png",
+      "images/EDE618B5-BABF-4667-B677-AC6A2CD43C5E.png",
+      "images/58420A6C-D62D-40C0-8248-6459E17845E5.png",
+      "images/52F0DED3-CF37-4A65-BB15-04289DC0BA26.png",
+      "images/D83FDD35-1088-4740-93AA-0C91B021ACEC.png",
+      "images/CA1F1625-3B8D-427B-BAC4-FFED49C3BDB6.png",
+      "images/4FDD3F3D-D984-4892-9FD4-55BD637A5EC6.png",
+      "images/E5C90E5F-D989-4F68-9C83-DEF46107744A.png",
+      "images/7795D1A2-254B-4417-A5AA-F0A4E22E2905.png",
+      "images/7C2D34D1-524E-4196-90EA-B29E2FA76838.png"
+    ];
+
+    let currentIndex = 0;
+    const grid = document.getElementById('catalog-grid');
+
+    images.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.innerHTML = `
+        <img src="${src}" alt="Collection piece ${i + 1}" loading="lazy">
+        <div class="overlay"><span>View</span></div>
+      `;
+      item.addEventListener('click', () => openLightbox(i));
+      grid.appendChild(item);
+    });
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = images[currentIndex];
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function prevImage(e) {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      document.getElementById('lightbox-img').src = images[currentIndex];
+    }
+
+    function nextImage(e) {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % images.length;
+      document.getElementById('lightbox-img').src = images[currentIndex];
+    }
+
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox' || e.target.id === 'lightbox-img') closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage(e);
+      if (e.key === 'ArrowRight') nextImage(e);
+    });
+  </script>
+</body>
+</html>
